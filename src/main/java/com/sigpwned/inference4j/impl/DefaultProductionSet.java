@@ -4,50 +4,49 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import com.sigpwned.inference4j.Production;
-import com.sigpwned.inference4j.ProductionSet;
+import com.sigpwned.inference4j.Rule;
+import com.sigpwned.inference4j.RuleSet;
 
-public class DefaultProductionSet<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>>
-    implements ProductionSet<RuleIdT, PropositionT, RuleT> {
-  private final List<RuleT> productions;
+public class DefaultProductionSet<RuleIdT, PropositionT> implements RuleSet<RuleIdT, PropositionT> {
+  private final List<Rule<RuleIdT, PropositionT>> productions;
 
-  public DefaultProductionSet(List<RuleT> productions) {
+  public DefaultProductionSet(List<Rule<RuleIdT, PropositionT>> productions) {
     this.productions = unmodifiableList(productions);
   }
 
   @Override
-  public Optional<RuleT> deduct(Set<PropositionT> satisfied) {
+  public Set<Rule<RuleIdT, PropositionT>> deduct(Set<PropositionT> satisfied) {
     return getProductions().stream().filter(p -> satisfied.containsAll(p.getAntecedents()))
-        .filter(p -> !satisfied.contains(p.getConsequent())).findAny();
+        .filter(p -> !satisfied.contains(p.getConsequent())).collect(toSet());
   }
 
   @Override
-  public Set<RuleT> abduct(PropositionT necessary) {
+  public Set<Rule<RuleIdT, PropositionT>> abduct(PropositionT necessary) {
     return getProductions().stream().filter(p -> p.getConsequent().equals(necessary))
         .collect(toSet());
   }
 
   @Override
-  public Set<RuleT> findByAntecedents(Set<PropositionT> antecedents) {
+  public Set<Rule<RuleIdT, PropositionT>> findByAntecedents(Set<PropositionT> antecedents) {
     return getProductions().stream().filter(p -> p.getAntecedents().equals(antecedents))
         .collect(toSet());
   }
 
   @Override
-  public Set<RuleT> findByConsequent(PropositionT consequent) {
+  public Set<Rule<RuleIdT, PropositionT>> findByConsequent(PropositionT consequent) {
     return getProductions().stream().filter(p -> p.getConsequent().equals(consequent))
         .collect(toSet());
   }
 
   @Override
-  public Set<RuleT> findBySignature(Set<PropositionT> antecedents, PropositionT consequent) {
+  public Set<Rule<RuleIdT, PropositionT>> findBySignature(Set<PropositionT> antecedents,
+      PropositionT consequent) {
     return getProductions().stream().filter(p -> p.getAntecedents().equals(antecedents))
         .filter(p -> p.getConsequent().equals(consequent)).collect(toSet());
   }
 
-  private List<RuleT> getProductions() {
+  private List<Rule<RuleIdT, PropositionT>> getProductions() {
     return productions;
   }
 

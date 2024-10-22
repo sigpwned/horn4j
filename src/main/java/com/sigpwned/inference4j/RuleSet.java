@@ -2,7 +2,7 @@ package com.sigpwned.inference4j;
 
 import java.util.Set;
 
-public interface ProductionSet<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>> {
+public interface RuleSet<RuleIdT, PropositionT> {
   /**
    * <p>
    * Perform one step of deductive reasoning. Given the set of propositions that are satisfied,
@@ -14,7 +14,7 @@ public interface ProductionSet<RuleIdT, PropositionT, RuleT extends Production<R
    * Colloquially, this is "forward inference."
    * </p>
    */
-  public Set<RuleT> deduct(Set<PropositionT> satisfied);
+  public Set<Rule<RuleIdT, PropositionT>> deduct(Set<PropositionT> satisfied);
 
   /**
    * <p>
@@ -26,11 +26,12 @@ public interface ProductionSet<RuleIdT, PropositionT, RuleT extends Production<R
    * Colloquially, this is "backward inference."
    * </p>
    */
-  public Set<RuleT> abduct(PropositionT necessary);
+  public Set<Rule<RuleIdT, PropositionT>> abduct(PropositionT necessary);
 
-  public Set<RuleT> findByAntecedents(Set<PropositionT> antecedents);
+  public Set<Rule<RuleIdT, PropositionT>> findByAntecedents(Set<PropositionT> antecedents);
 
-  public Set<RuleT> findByConsequent(PropositionT consequent);
+  public Set<Rule<RuleIdT, PropositionT>> findByConsequent(PropositionT consequent);
 
-  public Set<RuleT> findBySignature(Set<PropositionT> antecedents, PropositionT consequent);
+  public Set<Rule<RuleIdT, PropositionT>> findBySignature(Set<PropositionT> antecedents,
+      PropositionT consequent);
 }

@@ -5,12 +5,19 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Set;
 
-public class Production<IdT, PropositionT> {
+/**
+ * An inference rule in the form of {@code (a AND b AND c AND ...)} &rarr; {@code x}, i.e. a
+ * <a href="https://en.wikipedia.org/wiki/Horn_clause">horn clause</a>.
+ * 
+ * @param <IdT> The type of the rule's identifier.
+ * @param <PropositionT> The type of the propositions in the rule.
+ */
+public class Rule<IdT, PropositionT> {
   private final IdT id;
   private final Set<PropositionT> antecedents;
   private final PropositionT consequent;
 
-  public Production(IdT id, Set<PropositionT> antecedents, PropositionT consequent) {
+  public Rule(IdT id, Set<PropositionT> antecedents, PropositionT consequent) {
     this.id = requireNonNull(id);
     this.antecedents = unmodifiableSet(antecedents);
     this.consequent = requireNonNull(consequent);
@@ -54,14 +61,13 @@ public class Production<IdT, PropositionT> {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Production other = (Production) obj;
+    Rule other = (Rule) obj;
     return Objects.equals(antecedents, other.antecedents)
         && Objects.equals(consequent, other.consequent) && Objects.equals(id, other.id);
   }
 
   @Override
   public String toString() {
-    return "Production [id=" + id + ", antecedents=" + antecedents + ", consequent=" + consequent
-        + "]";
+    return "Rule [id=" + id + ", antecedents=" + antecedents + ", consequent=" + consequent + "]";
   }
 }

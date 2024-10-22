@@ -16,9 +16,8 @@ import com.sigpwned.inference4j.util.Sets;
  * 
  * @param <RuleIdT>
  * @param <PropositionT>
- * @param <RuleT>
  */
-public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>> {
+public class AbductiveClosure<RuleIdT, PropositionT> {
   /**
    * The initial propositions that were assumed to be true to start the walk. Each hypothesis in
    * this set will also appear in either {@code lemmas} or {@code postulates}, depending on whether
@@ -31,13 +30,13 @@ public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   /**
    * The rule set that was used to perform the walk.
    */
-  private final ProductionSet<RuleIdT, PropositionT, RuleT> rules;
+  private final RuleSet<RuleIdT, PropositionT> rules;
 
   /**
    * The subset of rules from {@code rules} that were fired during the walk. Each individual rule
    * was fired exactly once.
    */
-  private final Set<RuleT> fired;
+  private final Set<Rule<RuleIdT, PropositionT>> fired;
 
   /**
    * Propositions that must be assumed to be true for the given hypotheses to be true. When a
@@ -55,9 +54,9 @@ public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
    */
   private final Set<PropositionT> lemmas;
 
-  public AbductiveClosure(Set<PropositionT> hypotheses,
-      ProductionSet<RuleIdT, PropositionT, RuleT> rules, Set<RuleT> fired,
-      Set<PropositionT> postulates, Set<PropositionT> lemmas) {
+  public AbductiveClosure(Set<PropositionT> hypotheses, RuleSet<RuleIdT, PropositionT> rules,
+      Set<Rule<RuleIdT, PropositionT>> fired, Set<PropositionT> postulates,
+      Set<PropositionT> lemmas) {
     this.hypotheses = unmodifiableSet(hypotheses);
     this.rules = requireNonNull(rules);
     this.fired = unmodifiableSet(fired);
@@ -79,8 +78,7 @@ public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
         .noneMatch(p -> getFired().stream().anyMatch(r -> r.getConsequent().equals(p)));
 
     // All rules should have unique IDs. Therefore, these rules should have unique IDs.
-    assert getFired().stream().map(Production::getId).collect(MoreCollectors.duplicates())
-        .isEmpty();
+    assert getFired().stream().map(Rule::getId).collect(MoreCollectors.duplicates()).isEmpty();
 
     // Additionally:
     // - We don't check here, but no matching rule in rules should imply a postulate.
@@ -96,14 +94,14 @@ public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   /**
    * @return the rules
    */
-  public ProductionSet<RuleIdT, PropositionT, RuleT> getRules() {
+  public RuleSet<RuleIdT, PropositionT> getRules() {
     return rules;
   }
 
   /**
    * @return the fired
    */
-  public Set<RuleT> getFired() {
+  public Set<Rule<RuleIdT, PropositionT>> getFired() {
     return fired;
   }
 
@@ -127,6 +125,7 @@ public class AbductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public boolean equals(Object obj) {
     if (this == obj)
       return true;

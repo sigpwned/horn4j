@@ -2,27 +2,27 @@ package com.sigpwned.inference4j.impl;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.sigpwned.inference4j.DeductiveReasoner;
 import com.sigpwned.inference4j.DeductiveClosure;
-import com.sigpwned.inference4j.Production;
-import com.sigpwned.inference4j.ProductionSet;
+import com.sigpwned.inference4j.DeductiveReasoner;
+import com.sigpwned.inference4j.Rule;
+import com.sigpwned.inference4j.RuleSet;
 
-public class NaiveDeductiveReasoner<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>>
-    implements DeductiveReasoner<RuleIdT, PropositionT, RuleT> {
+public class NaiveDeductiveReasoner<RuleIdT, PropositionT>
+    implements DeductiveReasoner<RuleIdT, PropositionT> {
 
   @Override
-  public DeductiveClosure<RuleIdT, PropositionT, RuleT> deduct(Set<PropositionT> assumptions,
-      ProductionSet<RuleIdT, PropositionT, RuleT> rules) {
+  public DeductiveClosure<RuleIdT, PropositionT> deduct(Set<PropositionT> assumptions,
+      RuleSet<RuleIdT, PropositionT> rules) {
     Set<PropositionT> satisfied = new HashSet<>(assumptions);
     Set<PropositionT> conclusions = new HashSet<>();
-    Set<RuleT> fired = new HashSet<>();
+    Set<Rule<RuleIdT, PropositionT>> fired = new HashSet<>();
 
     boolean changed;
     do {
       changed = false;
 
-      Set<RuleT> deduceds = rules.deduct(satisfied);
-      for (RuleT deduced : deduceds) {
+      Set<Rule<RuleIdT, PropositionT>> deduceds = rules.deduct(satisfied);
+      for (Rule<RuleIdT, PropositionT> deduced : deduceds) {
         if (fired.add(deduced) == false) {
           continue;
         }

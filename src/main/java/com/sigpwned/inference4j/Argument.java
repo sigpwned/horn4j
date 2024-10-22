@@ -3,7 +3,7 @@ package com.sigpwned.inference4j;
 import static java.util.Collections.unmodifiableSet;
 import java.util.Set;
 
-public class Argument<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>> {
+public class Argument<RuleIdT, PropositionT, RuleT extends Rule<RuleIdT, PropositionT>> {
   /**
    * The propositions assumed to be true as the basis for this argument.
    */

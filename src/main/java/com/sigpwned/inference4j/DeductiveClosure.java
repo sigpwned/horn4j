@@ -16,9 +16,9 @@ import com.sigpwned.inference4j.util.MoreCollectors;
  * 
  * @param <RuleIdT>
  * @param <PropositionT>
- * @param <RuleT>
+ * @param <Rule<RuleIdT, PropositionT>>
  */
-public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>> {
+public class DeductiveClosure<RuleIdT, PropositionT> {
   /**
    * The propositions assumed to be true at the beginning of the walk.
    */
@@ -27,13 +27,13 @@ public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   /**
    * The set of rules that were used to perform the walk.
    */
-  private final ProductionSet<RuleIdT, PropositionT, RuleT> rules;
+  private final RuleSet<RuleIdT, PropositionT> rules;
 
   /**
    * The set of rules that were fired during the walk. Every element of this set must be in the
    * rules set.
    */
-  private final Set<RuleT> fired;
+  private final Set<Rule<RuleIdT, PropositionT>> fired;
 
   /**
    * <p>
@@ -60,9 +60,8 @@ public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
    */
   private final Set<PropositionT> conclusions;
 
-  public DeductiveClosure(Set<PropositionT> assumptions,
-      ProductionSet<RuleIdT, PropositionT, RuleT> rules, Set<RuleT> fired,
-      Set<PropositionT> conclusions) {
+  public DeductiveClosure(Set<PropositionT> assumptions, RuleSet<RuleIdT, PropositionT> rules,
+      Set<Rule<RuleIdT, PropositionT>> fired, Set<PropositionT> conclusions) {
     this.assumptions = unmodifiableSet(assumptions);
     this.rules = requireNonNull(rules);
     this.fired = unmodifiableSet(fired);
@@ -77,8 +76,7 @@ public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
     assert getFired().stream().allMatch(r -> getConclusions().contains(r.getConsequent()));
 
     // All rules should have unique IDs. Therefore, these rules should have unique IDs.
-    assert getFired().stream().map(Production::getId).collect(MoreCollectors.duplicates())
-        .isEmpty();
+    assert getFired().stream().map(Rule::getId).collect(MoreCollectors.duplicates()).isEmpty();
 
     // Additionally:
     // - Assumptions can be conclusions, if some subset of assumptions entails another assumption.
@@ -95,14 +93,14 @@ public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   /**
    * @return the rules
    */
-  public ProductionSet<RuleIdT, PropositionT, RuleT> getRules() {
+  public RuleSet<RuleIdT, PropositionT> getRules() {
     return rules;
   }
 
   /**
    * @return the rules that were fired
    */
-  public Set<RuleT> getFired() {
+  public Set<Rule<RuleIdT, PropositionT>> getFired() {
     return fired;
   }
 
@@ -119,6 +117,7 @@ public class DeductiveClosure<RuleIdT, PropositionT, RuleT extends Production<Ru
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public boolean equals(Object obj) {
     if (this == obj)
       return true;

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import com.sigpwned.inference4j.Closure;
 import com.sigpwned.inference4j.InferenceEngine;
-import com.sigpwned.inference4j.Production;
-import com.sigpwned.inference4j.ProductionSet;
+import com.sigpwned.inference4j.Rule;
+import com.sigpwned.inference4j.RuleSet;
 import com.sigpwned.inference4j.impl.DefaultProductionSet;
 
 public final class Closures {
@@ -18,7 +18,7 @@ public final class Closures {
       throw new IllegalArgumentException("anchors must be a subset of conclusions");
     }
 
-    final ProductionSet<IdT, PropositionT> productionSet =
+    final RuleSet<IdT, PropositionT> productionSet =
         new DefaultProductionSet<>(new ArrayList<>(closure.getRules()));
 
     final InferenceEngine<IdT, PropositionT> engine = new InferenceEngine<>(productionSet);
@@ -27,7 +27,7 @@ public final class Closures {
 
     Set<PropositionT> prunedAssumptions =
         closure.getAssumptions().stream().filter(abductiveClosure::contains).collect(toSet());
-    Set<Production<IdT, PropositionT>> prunedProductions =
+    Set<Rule<IdT, PropositionT>> prunedProductions =
         closure.getRules().stream().filter(p -> abductiveClosure.contains(p.getConsequent())
             && abductiveClosure.containsAll(p.getAntecedents())).collect(toSet());
     Set<PropositionT> prunedConclusions =

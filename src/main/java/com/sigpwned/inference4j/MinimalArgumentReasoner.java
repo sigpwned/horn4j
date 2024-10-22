@@ -2,7 +2,7 @@ package com.sigpwned.inference4j;
 
 import java.util.Set;
 
-public interface MinimalArgumentReasoner<RuleIdT, PropositionT, RuleT extends Production<RuleIdT, PropositionT>> {
+public interface MinimalArgumentReasoner<RuleIdT, PropositionT> {
   /**
    * <p>
    * Determine the minimal arguments that support a given hypothesis. Each minimal argument contains
@@ -24,8 +24,8 @@ public interface MinimalArgumentReasoner<RuleIdT, PropositionT, RuleT extends Pr
    * @param hypothesis
    * @return
    */
-  public Set<Argument<RuleIdT, PropositionT, RuleT>> minimalArguments(
-      ProductionSet<RuleIdT, PropositionT, RuleT> rules, PropositionT hypothesis);
+  public Set<Argument<RuleIdT, PropositionT, Rule<RuleIdT, PropositionT>>> minimalArguments(
+      RuleSet<RuleIdT, PropositionT> rules, PropositionT hypothesis);
 
   /**
    * <p>
@@ -48,6 +48,6 @@ public interface MinimalArgumentReasoner<RuleIdT, PropositionT, RuleT extends Pr
    * @param hypotheses
    * @return
    */
-  public Set<Argument<RuleIdT, PropositionT, RuleT>> minimalArguments(
-      ProductionSet<RuleIdT, PropositionT, RuleT> rules, Set<PropositionT> hypotheses);
+  public Set<Argument<RuleIdT, PropositionT, Rule<RuleIdT, PropositionT>>> minimalArguments(
+      RuleSet<RuleIdT, PropositionT> rules, Set<PropositionT> hypotheses);
 }
