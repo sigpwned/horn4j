@@ -1,8 +1,28 @@
+/*-
+ * =================================LICENSE_START==================================
+ * inference4j
+ * ====================================SECTION=====================================
+ * Copyright (C) 2024 Andy Boothe
+ * ====================================SECTION=====================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ==================================LICENSE_END===================================
+ */
 package com.sigpwned.inference4j.util;
 
 import static java.util.Collections.unmodifiableSet;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class Sets {
@@ -59,6 +79,23 @@ public final class Sets {
       throw new NullPointerException();
     return unmodifiableSet(
         sets.stream().flatMap(Set::stream).collect(HashSet::new, Set::add, Set::addAll));
+  }
+
+  /**
+   * Compute the union of the given sets. That is, return the set of elements that are in any of the
+   * given sets. Inspired by Guava's {@code Sets#union(Set...)}.
+   * 
+   * @param <T> the type of elements in the sets
+   * @param sets the sets to compute the union of
+   * @return the union of the given sets
+   * @throws NullPointerException if {@code sets} is {@code null}
+   */
+  public static <T> Set<T> union(Set<T> xs, Set<T> ys) {
+    if (xs == null)
+      throw new NullPointerException();
+    if (ys == null)
+      throw new NullPointerException();
+    return union(List.of(xs, ys));
   }
 
   /**

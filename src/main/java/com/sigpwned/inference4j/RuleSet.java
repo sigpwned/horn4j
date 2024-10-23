@@ -1,37 +1,47 @@
+/*-
+ * =================================LICENSE_START==================================
+ * inference4j
+ * ====================================SECTION=====================================
+ * Copyright (C) 2024 Andy Boothe
+ * ====================================SECTION=====================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ==================================LICENSE_END===================================
+ */
 package com.sigpwned.inference4j;
 
 import java.util.Set;
 
 public interface RuleSet<RuleIdT, PropositionT> {
   /**
-   * <p>
-   * Perform one step of deductive reasoning. Given the set of propositions that are satisfied,
-   * choose one production from this set such that: (a) the antecedents of the production are
-   * satisfied, and (b) the consequent of the production is not satisfied.
-   * </p>
-   * 
-   * <p>
-   * Colloquially, this is "forward inference."
-   * </p>
+   * Find all rules such that the rules' antecedents are exactly the given propositions.
    */
-  public Set<Rule<RuleIdT, PropositionT>> deduct(Set<PropositionT> satisfied);
+  public Set<Rule<RuleIdT, PropositionT>> findByExactAntecedents(Set<PropositionT> propositions);
 
   /**
-   * <p>
-   * Perform one step of abductive reasoning. Given a proposition that is necessary, return all of
-   * the productions that have that proposition as a consequent.
-   * </p>
-   * 
-   * <p>
-   * Colloquially, this is "backward inference."
-   * </p>
+   * Find all rules such that the rules' antecedents are a subset of the given propositions.
    */
-  public Set<Rule<RuleIdT, PropositionT>> abduct(PropositionT necessary);
+  public Set<Rule<RuleIdT, PropositionT>> findBySatisfiedAntecedents(
+      Set<PropositionT> propositions);
 
-  public Set<Rule<RuleIdT, PropositionT>> findByAntecedents(Set<PropositionT> antecedents);
+  /**
+   * Find all rules such that the rules' consequents are equal to the given proposition.
+   */
+  public Set<Rule<RuleIdT, PropositionT>> findByConsequent(PropositionT proposition);
 
-  public Set<Rule<RuleIdT, PropositionT>> findByConsequent(PropositionT consequent);
-
+  /**
+   * Find all rules such that the rules' antecedents are a subset of the given antecedents and the
+   * rules' consequents are equal to the given consequent.
+   */
   public Set<Rule<RuleIdT, PropositionT>> findBySignature(Set<PropositionT> antecedents,
       PropositionT consequent);
 }

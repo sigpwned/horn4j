@@ -1,3 +1,22 @@
+/*-
+ * =================================LICENSE_START==================================
+ * inference4j
+ * ====================================SECTION=====================================
+ * Copyright (C) 2024 Andy Boothe
+ * ====================================SECTION=====================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ==================================LICENSE_END===================================
+ */
 package com.sigpwned.inference4j.impl;
 
 import java.util.HashSet;
@@ -21,16 +40,15 @@ public class NaiveDeductiveReasoner<RuleIdT, PropositionT>
     do {
       changed = false;
 
-      Set<Rule<RuleIdT, PropositionT>> deduceds = rules.deduct(satisfied);
+      Set<Rule<RuleIdT, PropositionT>> deduceds = rules.findBySatisfiedAntecedents(satisfied);
       for (Rule<RuleIdT, PropositionT> deduced : deduceds) {
         if (fired.add(deduced) == false) {
           continue;
         }
 
-        for (PropositionT antecedent : deduced.getAntecedents()) {
-          if (conclusions.add(antecedent) == true) {
-            changed = true;
-          }
+        if (conclusions.add(deduced.getConsequent()) == true) {
+          satisfied.add(deduced.getConsequent());
+          changed = true;
         }
       }
     } while (changed);

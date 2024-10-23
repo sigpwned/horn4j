@@ -1,5 +1,25 @@
+/*-
+ * =================================LICENSE_START==================================
+ * inference4j
+ * ====================================SECTION=====================================
+ * Copyright (C) 2024 Andy Boothe
+ * ====================================SECTION=====================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ==================================LICENSE_END===================================
+ */
 package com.sigpwned.inference4j.impl;
 
+import static java.util.Collections.emptySet;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
@@ -15,6 +35,14 @@ public class NaiveAbductiveReasoner<RuleIdT, PropositionT>
   @Override
   public AbductiveClosure<RuleIdT, PropositionT> abduct(Set<PropositionT> hypotheses,
       RuleSet<RuleIdT, PropositionT> rules) {
+    if (hypotheses == null)
+      throw new NullPointerException();
+    if (rules == null)
+      throw new NullPointerException();
+
+    if (hypotheses.isEmpty())
+      return new AbductiveClosure<>(hypotheses, rules, emptySet(), emptySet(), emptySet());
+
     Set<PropositionT> postulates = new HashSet<>();
     Set<PropositionT> lemmas = new HashSet<>();
     Set<Rule<RuleIdT, PropositionT>> fired = new HashSet<>();
@@ -25,7 +53,7 @@ public class NaiveAbductiveReasoner<RuleIdT, PropositionT>
       PropositionT next = queue.poll();
 
       // TODO Should we do some kind of session to make calculation in RuleSet more efficient?
-      Set<Rule<RuleIdT, PropositionT>> abducteds = rules.abduct(next);
+      Set<Rule<RuleIdT, PropositionT>> abducteds = rules.findByConsequent(next);
       if (abducteds.isEmpty()) {
         // Since no rules infer us, we must be a postulate.
         postulates.add(next);
@@ -50,6 +78,12 @@ public class NaiveAbductiveReasoner<RuleIdT, PropositionT>
         lemmas.add(next);
       }
     } while (!queue.isEmpty());
+
+    for (PropositionT hypothesis : hypotheses) {
+      if (!lemmas.contains(hypothesis)) {
+        postulates.add(hypothesis);
+      }
+    }
 
     return new AbductiveClosure<>(hypotheses, rules, fired, postulates, lemmas);
   }
