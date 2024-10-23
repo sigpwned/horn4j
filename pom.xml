@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sigpwned</groupId>
-    <artifactId>inference4j</artifactId>
+    <artifactId>horn4j</artifactId>
     <version>0.0.0-SNAPSHOT</version>
-    <name>inference4j</name>
+    <name>horn4j</name>
     <inceptionYear>2024</inceptionYear>
     <description>Simple, Dependency-Free Boolean Inference Engine Java 8+</description>
-    <url>https://github.com/sigpwned/inference4j</url>
+    <url>https://github.com/sigpwned/horn4j</url>
     <packaging>jar</packaging>
 
     <organization>
@@ -16,9 +16,9 @@
     </organization>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com/sigpwned/inference4j.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/sigpwned/inference4j.git</developerConnection>
-        <url>https://github.com/sigpwned/inference4j/tree/main</url>
+        <connection>scm:git:ssh://git@github.com/sigpwned/horn4j.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/sigpwned/horn4j.git</developerConnection>
+        <url>https://github.com/sigpwned/horn4j/tree/main</url>
         <tag>v0.0.0</tag>
     </scm>
 
@@ -51,7 +51,7 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/sigpwned/inference4j</url>
+        <url>https://github.com/sigpwned/horn4j</url>
     </issueManagement>
 
     <properties>
