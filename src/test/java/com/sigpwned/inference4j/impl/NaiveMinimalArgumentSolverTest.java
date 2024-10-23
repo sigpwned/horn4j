@@ -19,12 +19,12 @@
  */
 package com.sigpwned.inference4j.impl;
 
-import com.sigpwned.inference4j.MinimalArgumentReasoner;
-import com.sigpwned.inference4j.MinimalArgumentReasonerTestBase;
+import com.sigpwned.inference4j.MinimalArgumentSolver;
+import com.sigpwned.inference4j.MinimalArgumentSolverTestBase;
 
-public class NaiveMinimalArgumentReasonerTest extends MinimalArgumentReasonerTestBase {
+public class NaiveMinimalArgumentSolverTest extends MinimalArgumentSolverTestBase {
   @Override
-  public MinimalArgumentReasoner<String, String> newMinimalArgumentReasoner() {
-    return new NaiveMinimalArgumentReasoner<>();
+  public MinimalArgumentSolver<String, String> newMinimalArgumentReasoner() {
+    return new NaiveMinimalArgumentSolver<>();
   }
 }

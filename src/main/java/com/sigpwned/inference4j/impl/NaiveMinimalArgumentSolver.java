@@ -28,13 +28,13 @@ import com.sigpwned.inference4j.AbductiveReasoner;
 import com.sigpwned.inference4j.Argument;
 import com.sigpwned.inference4j.DeductiveClosure;
 import com.sigpwned.inference4j.DeductiveReasoner;
-import com.sigpwned.inference4j.MinimalArgumentReasoner;
+import com.sigpwned.inference4j.MinimalArgumentSolver;
 import com.sigpwned.inference4j.RuleSet;
 import com.sigpwned.inference4j.util.PruningPowerSetWalker;
 import com.sigpwned.inference4j.util.Sets;
 
-public class NaiveMinimalArgumentReasoner<RuleIdT, PropositionT>
-    implements MinimalArgumentReasoner<RuleIdT, PropositionT> {
+public class NaiveMinimalArgumentSolver<RuleIdT, PropositionT>
+    implements MinimalArgumentSolver<RuleIdT, PropositionT> {
 
   @Override
   public Set<Argument<RuleIdT, PropositionT>> minimalArguments(RuleSet<RuleIdT, PropositionT> rules,

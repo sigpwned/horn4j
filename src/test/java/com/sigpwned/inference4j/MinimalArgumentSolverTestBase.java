@@ -27,12 +27,12 @@ import java.util.Set;
 import org.junit.Test;
 import com.sigpwned.inference4j.impl.DefaultRuleSet;
 
-public abstract class MinimalArgumentReasonerTestBase {
-  public abstract MinimalArgumentReasoner<String, String> newMinimalArgumentReasoner();
+public abstract class MinimalArgumentSolverTestBase {
+  public abstract MinimalArgumentSolver<String, String> newMinimalArgumentReasoner();
 
   @Test
   public void givenEmptyHypotheses_whenMinimalArguments_thenTrivialSolution() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of();
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("a"), "b"));
     RuleSet<String, String> ruleSet = new DefaultRuleSet<>(rules);
@@ -42,7 +42,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenSingleHypothesis_whenMinimalArguments_thenSingleArgument() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("b");
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("a"), "b"));
     RuleSet<String, String> ruleSet = new DefaultRuleSet<>(rules);
@@ -53,7 +53,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenMultipleHypotheses_whenMinimalArguments_thenMultipleArguments() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("c");
     List<Rule<String, String>> rules =
         List.of(new Rule<>("0", Set.of("a"), "b"), new Rule<>("1", Set.of("b"), "c"));
@@ -65,7 +65,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenNoMatchingRules_whenMinimalArguments_thenTrivialSolution() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("a");
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("x"), "y"));
     RuleSet<String, String> ruleSet = new DefaultRuleSet<>(rules);
@@ -75,7 +75,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenMultipleHypothesesAndRules_whenMinimalArguments_thenCorrectArguments() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("c", "f");
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("a"), "b"),
         new Rule<>("1", Set.of("b"), "c"), new Rule<>("2", Set.of("d"), "e"),
@@ -92,7 +92,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenMultipleHypothesesAndPartialMatchingRules_whenMinimalArguments_thenPartialArguments() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("c", "f");
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("a"), "b"),
         new Rule<>("1", Set.of("b"), "c"), new Rule<>("2", Set.of("d"), "e"),
@@ -109,7 +109,7 @@ public abstract class MinimalArgumentReasonerTestBase {
 
   @Test
   public void givenMultipleHypothesesAndNonMatchingRules_whenMinimalArguments_thenTrivialSolution() {
-    MinimalArgumentReasoner<String, String> reasoner = newMinimalArgumentReasoner();
+    MinimalArgumentSolver<String, String> reasoner = newMinimalArgumentReasoner();
     Set<String> hypotheses = Set.of("a", "d");
     List<Rule<String, String>> rules = List.of(new Rule<>("0", Set.of("x"), "y"),
         new Rule<>("1", Set.of("y"), "z"), new Rule<>("2", Set.of("z"), "w"));

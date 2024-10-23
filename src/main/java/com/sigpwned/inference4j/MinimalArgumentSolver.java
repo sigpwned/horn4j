@@ -21,7 +21,7 @@ package com.sigpwned.inference4j;
 
 import java.util.Set;
 
-public interface MinimalArgumentReasoner<RuleIdT, PropositionT> {
+public interface MinimalArgumentSolver<RuleIdT, PropositionT> {
   /**
    * <p>
    * Determine the minimal arguments that support a given hypothesis. Each minimal argument contains
