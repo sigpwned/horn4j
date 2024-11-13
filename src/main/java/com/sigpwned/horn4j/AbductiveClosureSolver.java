@@ -17,14 +17,11 @@
  * limitations under the License.
  * ==================================LICENSE_END===================================
  */
-package com.sigpwned.horn4j.impl;
+package com.sigpwned.horn4j;
 
-import com.sigpwned.horn4j.DeductiveReasonerTestBase;
-import com.sigpwned.horn4j.impl.NaiveDeductiveReasoner;
+import java.util.Set;
 
-public class NaiveDeductiveReasonerTest extends DeductiveReasonerTestBase {
-  @Override
-  public NaiveDeductiveReasoner<String, String> newDeductiveReasoner() {
-    return new NaiveDeductiveReasoner<String, String>();
-  }
+public interface AbductiveClosureSolver<RuleIdT, PropositionT> {
+  public AbductiveWalk<RuleIdT, PropositionT> abduct(Set<PropositionT> hypotheses,
+      RuleSet<RuleIdT, PropositionT> rules);
 }

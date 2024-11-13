@@ -19,13 +19,43 @@
  */
 package com.sigpwned.horn4j.util;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class Lists {
   private Lists() {}
+
+  public static <T> List<T> of() {
+    return emptyList();
+  }
+
+  public static <T> List<T> of(T value) {
+    return singletonList(value);
+  }
+
+  @SafeVarargs
+  public static <T> List<T> of(T... values) {
+    if (values == null)
+      throw new NullPointerException();
+    if (values.length == 0)
+      return of();
+    if (values.length == 1)
+      return of(values[0]);
+    List<T> result = new ArrayList<>(values.length);
+    for (T value : values)
+      result.add(value);
+    return result;
+  }
+
+  public static <T> List<T> copyOf(Collection<? extends T> elements) {
+    return unmodifiableList(new ArrayList<>(elements));
+  }
 
   /**
    * Computes the Cartesian product of a list of sets.

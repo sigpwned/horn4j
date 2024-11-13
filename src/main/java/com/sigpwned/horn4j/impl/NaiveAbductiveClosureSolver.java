@@ -20,39 +20,33 @@
 package com.sigpwned.horn4j.impl;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import com.sigpwned.horn4j.DeductiveClosure;
-import com.sigpwned.horn4j.DeductiveReasoner;
+import com.sigpwned.horn4j.AbductiveClosureSolver;
+import com.sigpwned.horn4j.AbductiveWalk;
+import com.sigpwned.horn4j.AbductiveWalker;
 import com.sigpwned.horn4j.Rule;
 import com.sigpwned.horn4j.RuleSet;
 
-public class NaiveDeductiveReasoner<RuleIdT, PropositionT>
-    implements DeductiveReasoner<RuleIdT, PropositionT> {
+public class NaiveAbductiveClosureSolver<RuleIdT, PropositionT>
+    implements AbductiveClosureSolver<RuleIdT, PropositionT> {
 
   @Override
-  public DeductiveClosure<RuleIdT, PropositionT> deduct(Set<PropositionT> assumptions,
+  public AbductiveWalk<RuleIdT, PropositionT> abduct(Set<PropositionT> hypotheses,
       RuleSet<RuleIdT, PropositionT> rules) {
-    Set<PropositionT> satisfied = new HashSet<>(assumptions);
-    Set<PropositionT> conclusions = new HashSet<>();
-    Set<Rule<RuleIdT, PropositionT>> fired = new HashSet<>();
+    if (hypotheses == null)
+      throw new NullPointerException();
+    if (rules == null)
+      throw new NullPointerException();
 
-    boolean changed;
-    do {
-      changed = false;
+    final Set<PropositionT> evidence = new HashSet<>();
+    final LinkedHashSet<Rule<RuleIdT, PropositionT>> fired = new LinkedHashSet<>();
+    new NaiveAbductiveWalker<RuleIdT, PropositionT>().walk(hypotheses, rules, (walk) -> {
+      evidence.addAll(walk.getEvidence());
+      fired.addAll(walk.getFired());
+      return AbductiveWalker.Instruction.CONTINUE;
+    });
 
-      Set<Rule<RuleIdT, PropositionT>> deduceds = rules.findBySatisfiedAntecedents(satisfied);
-      for (Rule<RuleIdT, PropositionT> deduced : deduceds) {
-        if (fired.add(deduced) == false) {
-          continue;
-        }
-
-        if (conclusions.add(deduced.getConsequent()) == true) {
-          satisfied.add(deduced.getConsequent());
-          changed = true;
-        }
-      }
-    } while (changed);
-
-    return new DeductiveClosure<>(assumptions, rules, fired, conclusions);
+    return new AbductiveWalk<RuleIdT, PropositionT>(hypotheses, fired, evidence);
   }
 }

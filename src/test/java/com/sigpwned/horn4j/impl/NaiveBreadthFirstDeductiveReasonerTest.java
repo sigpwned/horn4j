@@ -19,12 +19,12 @@
  */
 package com.sigpwned.horn4j.impl;
 
-import com.sigpwned.horn4j.AbductiveClosureSolver;
-import com.sigpwned.horn4j.AbductiveReasonerTestBase;
+import com.sigpwned.horn4j.DeductiveClosureSolver;
+import com.sigpwned.horn4j.DeductiveReasonerTestBase;
 
-public class NaiveAbductiveReasonerTest extends AbductiveReasonerTestBase {
+public class NaiveBreadthFirstDeductiveReasonerTest extends DeductiveReasonerTestBase {
   @Override
-  public AbductiveClosureSolver<String, String> newAbductiveReasoner() {
-    return new NaiveAbductiveClosureSolver<String, String>();
+  public DeductiveClosureSolver<String, String> newDeductiveReasoner() {
+    return new NaiveDeductiveClosureSolver<String, String>(NaiveBreadthFirstDeductiveWalker::new);
   }
 }

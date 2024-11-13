@@ -1,6 +1,6 @@
 /*-
  * =================================LICENSE_START==================================
- * inference4j
+ * horn4j
  * ====================================SECTION=====================================
  * Copyright (C) 2024 Andy Boothe
  * ====================================SECTION=====================================
@@ -17,14 +17,20 @@
  * limitations under the License.
  * ==================================LICENSE_END===================================
  */
-package com.sigpwned.horn4j.impl;
+package com.sigpwned.horn4j;
 
-import com.sigpwned.horn4j.AbductiveClosureSolver;
-import com.sigpwned.horn4j.AbductiveReasonerTestBase;
+import java.util.Set;
 
-public class NaiveAbductiveReasonerTest extends AbductiveReasonerTestBase {
-  @Override
-  public AbductiveClosureSolver<String, String> newAbductiveReasoner() {
-    return new NaiveAbductiveClosureSolver<String, String>();
-  }
+
+/**
+ * Solves for all minimal arguments (i.e., sets of assumptions and rules that are both necessary and
+ * sufficient) from the given sets of all available assumptions and rules that entail the given set
+ * of goals.
+ * 
+ * @param <RuleIdT>
+ * @param <PropositionT>
+ */
+public interface DeductiveMinimalArgumentSolver<RuleIdT, PropositionT> {
+  public Set<DeductiveWalk<RuleIdT, PropositionT>> solve(Set<PropositionT> assumptions,
+      RuleSet<RuleIdT, PropositionT> ruleset, Set<PropositionT> goals);
 }

@@ -20,14 +20,12 @@
 package com.sigpwned.horn4j.impl;
 
 import static java.util.Collections.singleton;
-import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toSet;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -79,13 +77,13 @@ public class DefaultRuleSet<RuleIdT, PropositionT> implements RuleSet<RuleIdT, P
     }
   }
 
-  private final List<Rule<RuleIdT, PropositionT>> rules;
+  private final Set<Rule<RuleIdT, PropositionT>> rules;
   private transient Map<PropositionT, Set<Rule<RuleIdT, PropositionT>>> rulesByConsequent;
   private transient Map<Set<PropositionT>, Set<Rule<RuleIdT, PropositionT>>> rulesByAntecedents;
   private transient Map<RuleSignature<PropositionT>, Set<Rule<RuleIdT, PropositionT>>> rulesBySignature;
 
-  public DefaultRuleSet(List<Rule<RuleIdT, PropositionT>> rules) {
-    this.rules = unmodifiableList(rules);
+  public DefaultRuleSet(Set<Rule<RuleIdT, PropositionT>> rules) {
+    this.rules = unmodifiableSet(rules);
   }
 
   @Override
@@ -114,7 +112,7 @@ public class DefaultRuleSet<RuleIdT, PropositionT> implements RuleSet<RuleIdT, P
         Collections.emptySet());
   }
 
-  private List<Rule<RuleIdT, PropositionT>> getRules() {
+  public Set<Rule<RuleIdT, PropositionT>> getRules() {
     return rules;
   }
 

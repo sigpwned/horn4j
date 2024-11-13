@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.junit.Test;
-import com.sigpwned.horn4j.util.Lists;
 
 public class ListsTest {
   @Test

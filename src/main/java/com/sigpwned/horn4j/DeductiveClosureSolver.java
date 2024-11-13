@@ -21,7 +21,7 @@ package com.sigpwned.horn4j;
 
 import java.util.Set;
 
-public interface AbductiveReasoner<RuleIdT, PropositionT> {
-  public AbductiveClosure<RuleIdT, PropositionT> abduct(Set<PropositionT> hypotheses,
+public interface DeductiveClosureSolver<RuleIdT, PropositionT> {
+  public DeductiveWalk<RuleIdT, PropositionT> deduct(Set<PropositionT> assumptions,
       RuleSet<RuleIdT, PropositionT> rules);
 }

@@ -81,7 +81,7 @@ public class PruningPowerSetWalker<T> {
 
     // First, try the empty set. If that returns true, then we should not proceed with the rest of
     // the power set walk, since any other set is a superset of the empty set.
-    boolean shouldPruneEmptySet = handler.visit(Set.of());
+    boolean shouldPruneEmptySet = handler.visit(Sets.of());
     if (shouldPruneEmptySet) {
       return;
     }
@@ -112,7 +112,7 @@ public class PruningPowerSetWalker<T> {
     // any set that contains that element will be a superset of the set of size 1.
     Set<T> prunedSet = new HashSet<>(xs.size());
     for (T element : originalSet) {
-      Set<T> singletonSet = Set.of(element);
+      Set<T> singletonSet = Sets.of(element);
       boolean shouldPruneSingletonSet = handler.visit(singletonSet);
       if (shouldPruneSingletonSet) {
         matchedSubsets.add(singletonSet);
@@ -122,9 +122,9 @@ public class PruningPowerSetWalker<T> {
     }
 
     // Convert the newly-pruned set to a list for easier indexed access
-    List<T> prunedList = List.copyOf(prunedSet);
+    List<T> prunedList = Lists.copyOf(prunedSet);
 
-    // Walk subsets of increasing lengths from 2 to |originalSet|. We start at 2 because we already
+    // DeductiveWalk subsets of increasing lengths from 2 to |originalSet|. We start at 2 because we already
     // visited subsets of size 1 above.
     for (int k = 2; k <= xs.size(); k++) {
       backtrack(new HashSet<>(), 0, k, prunedList, matchedSubsets, handler);
@@ -143,7 +143,7 @@ public class PruningPowerSetWalker<T> {
       // of this subset.
       boolean shouldPrune = handler.visit(unmodifiableSet(currentSet));
       if (shouldPrune) {
-        matchedSubsets.add(Set.copyOf(currentSet));
+        matchedSubsets.add(Sets.copyOf(currentSet));
       }
     } else {
       // Iterate over the remaining elements to generate subsets dynamically

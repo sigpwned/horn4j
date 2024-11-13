@@ -19,14 +19,42 @@
  */
 package com.sigpwned.horn4j.util;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 import static java.util.Collections.unmodifiableSet;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public final class Sets {
   private Sets() {}
+
+  public static <T> Set<T> of() {
+    return emptySet();
+  }
+
+  public static <T> Set<T> of(T value) {
+    return singleton(value);
+  }
+
+  @SafeVarargs
+  public static <T> Set<T> of(T... values) {
+    if (values == null)
+      throw new NullPointerException();
+    if (values.length == 0)
+      return of();
+    if (values.length == 1)
+      return of(values[0]);
+    Set<T> result = new HashSet<>(values.length);
+    for (T value : values)
+      result.add(value);
+    return result;
+  }
+
+  public static <T> Set<T> copyOf(Collection<? extends T> elements) {
+    return unmodifiableSet(new HashSet<>(elements));
+  }
 
   /**
    * Compute the Cartesian product of the given sets. That is, return the set of sets that can be
@@ -95,7 +123,7 @@ public final class Sets {
       throw new NullPointerException();
     if (ys == null)
       throw new NullPointerException();
-    return union(List.of(xs, ys));
+    return union(Lists.of(xs, ys));
   }
 
   /**
@@ -114,5 +142,17 @@ public final class Sets {
     if (ys == null)
       throw new NullPointerException();
     return xs.stream().noneMatch(ys::contains);
+  }
+
+  public static <T> LinkedHashSet<T> newLinkedHashSet(Collection<T> elements) {
+    LinkedHashSet<T> result = new LinkedHashSet<>();
+    for (T element : elements)
+      result.add(element);
+    return result;
+  }
+
+  @SafeVarargs
+  public static <T> LinkedHashSet<T> newLinkedHashSet(T... elements) {
+    return newLinkedHashSet(Lists.of(elements));
   }
 }
