@@ -144,6 +144,25 @@ public final class Sets {
     return xs.stream().noneMatch(ys::contains);
   }
 
+  /**
+   * Returns the difference of the given sets, i.e., the set of elements that are in the first set
+   * but not in the second set. Inspired by Guava's {@code Sets#difference(Set, Set)}.
+   * 
+   * @param <T> the type of elements in the sets
+   * @param xs the first set
+   * @param ys the second set
+   * @return the difference of the given sets
+   */
+  public static <T> Set<T> difference(Set<T> xs, Set<T> ys) {
+    if (xs == null)
+      throw new NullPointerException();
+    if (ys == null)
+      throw new NullPointerException();
+    Set<T> result = new HashSet<>(xs);
+    result.removeAll(ys);
+    return result;
+  }
+
   public static <T> LinkedHashSet<T> newLinkedHashSet(Collection<T> elements) {
     LinkedHashSet<T> result = new LinkedHashSet<>();
     for (T element : elements)

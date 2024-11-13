@@ -82,4 +82,14 @@ public class SetsTest {
     Set<Set<Integer>> result = Sets.cartesianProduct(input);
     assertEquals(expected, result);
   }
+
+  @Test
+  public void givenTwoSetsWithNonEmptyIntersection_whenDifference_thenGetDifference() {
+    Set<Integer> set1 = new HashSet<>(Arrays.asList(1, 2, 3));
+    Set<Integer> set2 = new HashSet<>(Arrays.asList(2, 3, 4));
+    Set<Integer> expected = new HashSet<>(Arrays.asList(1));
+
+    Set<Integer> result = Sets.difference(set1, set2);
+    assertEquals(expected, result);
+  }
 }
